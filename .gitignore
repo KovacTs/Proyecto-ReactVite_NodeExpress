@@ -1,0 +1,35 @@
+# ----------------------------------------
+# DEPENDENCIAS Y ARTEFACTOS DE COMPILACIÓN
+# ----------------------------------------
+
+# Ignorar todas las carpetas node_modules
+# (Asumiendo que también hay una en la raíz si usas un monorepo tool, aunque no se ve)
+/node_modules
+
+# Frontend (Vite/React)
+frontend/node_modules
+frontend/dist
+frontend/build
+frontend/.vscode # Archivos de configuración local de VS Code
+frontend/.gitignore # Ignorar gitignore locales en frontend
+frontend/package-lock.json
+# Backend (Node/Express/TS)
+backend/node_modules
+backend/dist
+backend/build
+backend/package-lock.json
+# ----------------------------------------
+# ARCHIVOS GENERADOS POR NODE/SO
+# ----------------------------------------
+npm-debug.log*
+yarn-error.log*
+.DS_Store
+# Lograr que el gitignore ignore cualquier archivo que termine con log
+*.log
+
+# ----------------------------------------
+# SECRETOS Y VARIABLES DE ENTORNO
+# ----------------------------------------
+# Es crucial ignorar variables de entorno que contienen claves o credenciales.
+.env
+.env.*
