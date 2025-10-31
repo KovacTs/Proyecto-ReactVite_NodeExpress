@@ -1,37 +1,46 @@
 import { useState, useEffect } from 'react';
-import type { SaludoResponse } from './types/Api'; // Importamos la interfaz
-import { Button } from './components/ui/button';
+import { Button } from './components/components/ui/button';
+
+import { ThemeProvider } from "./components/theme-provider";
+import { ModeToggle } from './components/mode-toggle';
+import { LoginForm } from './components/auth/LoginForm';
+import { RegisterForm } from './components/auth/RegisterForm';
+
 
 function App() {
-  // Usamos el tipo definido para el estado
-  const [data, setData] = useState<string>(''); 
-
-  const handleButtonClick = () => {
-    alert('¡Botón presionado!');
-  };
-
-  useEffect(() => {
-    // La URL `/api/saludo` es manejada por el proxy de Vite
-    fetch('/api/saludo')
-      .then(res => res.json())
-      .then((result: SaludoResponse) => { // Tipamos el resultado de la promesa
-        setData(result.message);
-      })
-      .catch(error => {
-        console.error('Error al obtener datos del backend:', error);
-        setData('Error de conexión');
-      });
-  }, []);
+  const [showLogin, setShowLogin] = useState(true);
 
   return (
-    <div>
-      <h1>Frontend React con Vite (TS)</h1>
-      <p>Mensaje del servidor: <strong>{data || 'Cargando...'}</strong></p>
-      {/* 1. Botón Primario (por defecto) */}
-      <Button onClick={handleButtonClick}>
-        Botón Primario de Shadcn
-      </Button>
-    </div>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <div className="relative flex min-h-screen flex-col items-center justify-center">
+        <div className="absolute top-4 right-4">
+            <ModeToggle />
+          </div>
+        <div className="w-full max-w-md p-8 space-y-6">
+          <div className="text-center">
+            <h1 className="text-3xl font-bold">Mi Aplicación</h1>
+          </div>
+
+          {showLogin ? (
+            <>
+              <h2 className="text-center text-xl font-semibold">Iniciar Sesión</h2>
+              <LoginForm />
+              <p className="mt-4 text-center">
+                ¿No tienes cuenta? <Button variant="link" onClick={() => setShowLogin(false)}>Regístrate</Button>
+              </p>
+            </>
+          ) : (
+            <>
+              <h2 className="text-center text-xl font-semibold">Registro</h2>
+              <RegisterForm />
+              <p className="mt-4 text-center">
+                ¿Ya tienes cuenta? <Button variant="link" onClick={() => setShowLogin(true)}>Inicia Sesión</Button>
+              </p>
+            </>
+          )}
+        </div>
+      </div>
+    </ThemeProvider>
   );
 }
 

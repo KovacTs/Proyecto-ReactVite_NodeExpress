@@ -21,6 +21,10 @@ app.use(cors(corsOptions));
 interface SaludoResponse {
     message: string;
 }
+interface RespuestaBoton {
+    message: string;
+}
+
 
 // Endpoint de prueba
 // Importamos Request y Response de 'express' para tipar los parámetros req y res
@@ -29,7 +33,9 @@ app.get('/api/saludo', (req: Request, res: Response<SaludoResponse>) => {
     res.json({ message: 'Hola desde el backend de Express con TypeScript!' });
 });
 
-
+app.get('/api/RespuestaBoton', (req: Request, res: Response<RespuestaBoton>) => {
+    res.json({ message: 'Este es el endpoint del botón!' });
+});
 // Iniciamos el servidor
 app.listen(PORT, () => {
     // Usamos template literals para el mensaje de consola

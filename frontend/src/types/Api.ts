@@ -2,3 +2,7 @@
 export interface SaludoResponse {
   message: string;
 }
+
+export interface RespuestaBoton {
+  message: string;
+}
