@@ -3,8 +3,8 @@
     // ... otras opciones ...
     "baseUrl": "./src", // Indica que la base para los aliases es la carpeta 'src'
     "paths": {
-      "@/components/*": ["components/*"],
-      "@/lib/*": ["lib/*"]
+      "@components*": ["/components/*"],
+      "@lib/*": ["lib/*"]
     }
   },
   // ... otras configuraciones ...
