@@ -1,16 +1,4 @@
 {
-  "compilerOptions": {
-    // ... otras opciones ...
-    "baseUrl": "./src", // Indica que la base para los aliases es la carpeta 'src'
-    "paths": {
-      "@components*": ["/components/*"],
-      "@lib/*": ["lib/*"]
-    }
-  },
-  // ... otras configuraciones ...
   "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }
