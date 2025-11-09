@@ -1,0 +1,14 @@
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+
+export const RutaProtegida = () => {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    // Si no está autenticado, redirige a la página de login
+    return <Navigate to="/login" />;
+  }
+
+  // Si está autenticado, renderiza el componente hijo (la página protegida)
+  return <Outlet />;
+};

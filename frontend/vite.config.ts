@@ -13,10 +13,11 @@ export default defineConfig({
     },
   },
   server: {
+    host: true, // Escucha en todas las direcciones locales
     // Redirige peticiones que empiecen con /api a la dirección del backend
     proxy: {
       '/api': {
-        target: 'http://localhost:3000', // Asegúrate de que coincida con el puerto de tu backend
+        target: 'http://backend:3000', // Usamos el nombre del servicio de Docker
         changeOrigin: true,
         secure: false, 
       }

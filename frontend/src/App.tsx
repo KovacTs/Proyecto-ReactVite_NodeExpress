@@ -1,12 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 import { Button } from './components/ui/button';
 import { ThemeProvider } from "./components/theme-provider";
 import { ModeToggle } from './components/mode-toggle';
 import { LoginForm } from './pages/auth/LoginForm';
 import { RegisterForm } from './pages/auth/RegisterForm';
+import { ProfilePage } from './pages/profile/ProfilePage';
+import { Home } from './pages/home/Home';
+import { RutaProtegida } from './components/RutaProtegida';
 
-import { Link } from 'react-router-dom';
 
 function App() {
 
@@ -23,6 +25,14 @@ function App() {
           </div>
 
           <Routes>
+              {/* Opcional: Establece una ruta por defecto (ej. al /login) o para una Home Page */}
+              <Route path="/" element={<Home />} />
+
+              {/* Rutas Protegidas */}
+              <Route element={<RutaProtegida />}>
+                <Route path="/profile" element={<ProfilePage />} />
+              </Route>
+
               {/* Ruta para Iniciar Sesión. URL: /login */}
               <Route 
                 path="/login" 
@@ -54,9 +64,6 @@ function App() {
                   </>
                 } 
               />
-              
-              {/* Opcional: Establece una ruta por defecto (ej. al /login) o para una Home Page */}
-              <Route path="/" element={<div>Bienvenido a la Home Page. <Link to="/login">Ir a Login</Link></div>} />
 
               {/* Opcional: Ruta para manejar URLs no encontradas (404) */}
               <Route path="*" element={<div>Error 404: Página no encontrada</div>} />

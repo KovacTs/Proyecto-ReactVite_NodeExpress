@@ -1,0 +1,35 @@
+# Etapa 1: Construir la aplicación TypeScript
+FROM node:20-alpine AS build
+
+# Establecer el directorio de trabajo en el contenedor
+WORKDIR /app
+
+# Copiar package.json y package-lock.json (o yarn.lock)
+COPY package*.json ./
+
+# Instalar TODAS las dependencias (incluyendo typescript para compilar)
+RUN npm install
+
+# Copiar el resto del código de la aplicación
+COPY . .
+
+# Compilar el código TypeScript a JavaScript
+# (Esto asume que tienes un script "build" en tu package.json que ejecuta `tsc`)
+RUN npm run build
+
+# Etapa 2: Preparar la imagen de producción
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copiar solo las dependencias de producción desde la etapa de build
+COPY --from=build /app/node_modules ./node_modules
+# Copiar los archivos compilados desde la etapa de build
+COPY --from=build /app/dist ./dist
+
+# Exponer el puerto en el que corre tu backend
+EXPOSE 3000
+
+# Comando para iniciar la aplicación
+# Asegúrate de que el punto de entrada sea el correcto después de compilar
+CMD [ "node", "dist/server.js" ]

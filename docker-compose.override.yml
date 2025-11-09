@@ -1,0 +1,30 @@
+services:
+  # Anulamos la configuración del servicio 'frontend' solo para desarrollo
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      # Mapeamos el puerto 5173 de Vite al puerto 5173 de tu máquina
+      - "5173:5173"
+    volumes:
+      # Este es el paso más importante:
+      # Monta tu código local en el contenedor.
+      # <tu-ruta-local>:<ruta-en-el-contenedor>
+      - ./frontend:/app
+      # También evitamos que node_modules se sobrescriba con una carpeta local vacía
+      - /app/node_modules
+
+  # No es necesario anular el backend ni la base de datos,
+  # seguirán usando la configuración de docker-compose.yml
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      # Monta el código local del backend en el contenedor
+      - ./backend:/app
+      # Evita que la carpeta node_modules local sobreescriba la del contenedor
+      - /app/node_modules
+    # Los 'ports', 'environment' y 'depends_on' del docker-compose.yml principal
+    # se fusionan automáticamente.

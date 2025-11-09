@@ -41,10 +41,26 @@ export function RegisterForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Aquí iría la lógica para enviar los datos al backend
-    console.log("Datos del registro:", values);
-    alert("Formulario de registro enviado. Revisa la consola.");
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Error al registrarse.");
+      }
+
+      alert("¡Registro exitoso!");
+    } catch (error) {
+      alert((error as Error).message);
+    }
   }
 
   return (

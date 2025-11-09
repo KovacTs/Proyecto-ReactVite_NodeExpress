@@ -1,5 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import * as z from "zod";
 import { Button } from "@components/ui/button";
 import {
@@ -29,6 +31,9 @@ const formSchema = z.object({
 });
 
 export function LoginForm() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,10 +42,28 @@ export function LoginForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Aquí iría la lógica para enviar los datos al backend
-    console.log("Datos del login:", values);
-    alert("Formulario de login enviado. Revisa la consola.");
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Error al iniciar sesión.");
+      }
+
+      // Guardar token y actualizar estado
+      login(data.token);
+      navigate("/profile"); // Redirigir al perfil
+    } catch (error) {
+      alert((error as Error).message);
+    }
   }
 
   return (

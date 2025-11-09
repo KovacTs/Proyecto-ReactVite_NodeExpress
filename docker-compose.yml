@@ -1,0 +1,59 @@
+services:
+  # Servicio de PostgreSQL
+  db:
+    image: postgres:14-alpine
+    container_name: mi-proyecto-db
+    restart: always
+    environment:
+      POSTGRES_USER: user_db
+      POSTGRES_PASSWORD: password_db
+      POSTGRES_DB: auth_db
+    ports:
+      # Mapea el puerto de la base de datos para poder conectarte desde tu máquina si es necesario
+      - "5432:5432"
+    volumes:
+      # Persiste los datos de la base de datos
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mi-red
+
+  # Servicio del Backend
+  backend:
+    build: ./backend
+    container_name: mi-proyecto-backend
+    restart: always
+    ports:
+      - "3000:3000" # Mapea el puerto 3000 del host al 3000 del contenedor
+    depends_on:
+      - db # El backend no se iniciará hasta que la base de datos esté lista
+    environment:
+      - NODE_ENV=production
+      # Variables de entorno para la conexión a la base de datos
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=user_db
+      - DB_PASSWORD=password_db
+      - DB_DATABASE=auth_db
+      # Variable de entorno para el secreto del JWT
+      - JWT_SECRET=este-es-un-secreto-mucho-mas-seguro-y-largo
+    networks:
+      - mi-red
+
+  # Servicio del Frontend
+  frontend:
+    build: ./frontend
+    container_name: mi-proyecto-frontend
+    restart: always
+    ports:
+      - "80:80" # Mapea el puerto 80 del host al 80 del contenedor (Nginx)
+    depends_on:
+      - backend # Indica que el frontend depende del backend
+    networks:
+      - mi-red
+
+volumes:
+  postgres_data:
+
+networks:
+  mi-red:
+    driver: bridge
