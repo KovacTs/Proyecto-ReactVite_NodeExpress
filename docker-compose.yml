@@ -29,13 +29,19 @@ services:
     environment:
       - NODE_ENV=production
       # Variables de entorno para la conexión a la base de datos
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_USER=user_db
-      - DB_PASSWORD=password_db
-      - DB_DATABASE=auth_db
+      - PGHOST=db
+      - PGPORT=5432
+      - PGUSER=user_db
+      - PGPASSWORD=password_db
+      - PGDATABASE=auth_db
       # Variable de entorno para el secreto del JWT
       - JWT_SECRET=este-es-un-secreto-mucho-mas-seguro-y-largo
+      # Variables de entorno para el envío de correos (Nodemailer)
+      - EMAIL_HOST=smtp.ethereal.email
+      - EMAIL_PORT=587
+      - EMAIL_USER=your_ethereal_email@ethereal.email # Reemplaza con tu email de Ethereal
+      - EMAIL_PASSWORD=your_ethereal_password # Reemplaza con tu contraseña de Ethereal
+      - EMAIL_FROM="Mi Aplicación" <no-reply@example.com>
     networks:
       - mi-red
 

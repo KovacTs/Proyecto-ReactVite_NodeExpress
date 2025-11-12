@@ -11,11 +11,11 @@ const PORT = 3000;
 
 // Configuración de la conexión a PostgreSQL usando variables de entorno
 const pool = new Pool({
-    host: process.env.DB_HOST || 'localhost',
-    port: Number(process.env.DB_PORT) || 5432,
-    user: process.env.DB_USER || 'user_db',
-    password: process.env.DB_PASSWORD || 'password_db',
-    database: process.env.DB_DATABASE || 'auth_db',
+    host: process.env.PGHOST || 'localhost',
+    port: Number(process.env.PGPORT) || 5432,
+    user: process.env.PGUSER || 'user_db',
+    password: process.env.PGPASSWORD || 'password_db',
+    database: process.env.PGDATABASE || 'auth_db',
 });
 
 // Inicializamos la aplicación de Express
